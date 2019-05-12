@@ -10,9 +10,13 @@ RUN apt-get update && \
     libtool
 RUN gem install Mxx_ru
 
+ARG hgrev=tip
+
 RUN echo "*** Downloading RESTinio ***" \
 	&& cd /tmp \
-	&& hg clone https://bitbucket.com/sobjectizerteam/restinio-0.4
+	&& hg clone https://bitbucket.com/sobjectizerteam/restinio-0.4 \
+	&& cd restinio-0.4 \
+	&& hg up -r $hgrev
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
 	&& cd /tmp/restinio-0.4 \
