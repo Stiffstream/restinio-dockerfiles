@@ -6,18 +6,19 @@ RUN apt-get update && \
     wget libpcre2-dev libpcre3-dev pkg-config \
 	 libboost-all-dev \
 	 libssl-dev \
+	 mercurial \
     libtool
 RUN gem install Mxx_ru
 
-RUN mkdir /tmp/restinio
-COPY externals.rb /tmp/restinio
-COPY dev /tmp/restinio/dev
+RUN echo "*** Downloading RESTinio ***" \
+	&& cd /tmp \
+	&& hg clone https://bitbucket.com/sobjectizerteam/restinio-0.4
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
-	&& cd /tmp/restinio \
+	&& cd /tmp/restinio-0.4 \
 	&& mxxruexternals
 
 RUN echo "*** Building RESTinio ***" \
-	&& cd /tmp/restinio/dev \
+	&& cd /tmp/restinio-0.4/dev \
 	&& MXX_RU_CPP_TOOLSET=gcc_linux ruby build.rb --mxx-cpp-release
 
