@@ -14,15 +14,15 @@ ARG hgrev=tip
 
 RUN echo "*** Downloading RESTinio ***" \
 	&& cd /tmp \
-	&& hg clone https://bitbucket.com/sobjectizerteam/restinio-0.4 \
-	&& cd restinio-0.4 \
+	&& hg clone https://bitbucket.com/sobjectizerteam/restinio \
+	&& cd restinio \
 	&& hg up -r $hgrev
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
-	&& cd /tmp/restinio-0.4 \
+	&& cd /tmp/restinio \
 	&& mxxruexternals
 
 RUN echo "*** Building RESTinio ***" \
-	&& cd /tmp/restinio-0.4/dev \
+	&& cd /tmp/restinio/dev \
 	&& MXX_RU_CPP_TOOLSET=gcc_linux ruby build.rb --mxx-cpp-release
 
