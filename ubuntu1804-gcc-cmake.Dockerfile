@@ -23,6 +23,7 @@ RUN echo "*** Extracting RESTinio's Dependencies ***" \
 	&& mxxruexternals
 
 RUN echo "*** Getting CMake ***" \
+	&& apt-get update \
 	&& apt-get -y install cmake
 
 RUN echo "*** Building RESTinio ***" \
@@ -31,5 +32,6 @@ RUN echo "*** Building RESTinio ***" \
 	&& cd cmake_build \
 	&& cmake -DCMAKE_INSTALL_PREFIX=target -DCMAKE_BUILD_TYPE=Release .. \
 	&& cmake --build . --config Release \
-	&& cmake --build . --target test
+	&& cmake --build . --target test \
+	&& cmake --build . --target install
 
