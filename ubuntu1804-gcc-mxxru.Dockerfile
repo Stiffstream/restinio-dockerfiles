@@ -6,17 +6,17 @@ RUN apt-get update && \
     wget libpcre2-dev libpcre3-dev pkg-config \
 	 libboost-all-dev \
 	 libssl-dev \
-	 mercurial \
+	 git \
     libtool
 RUN gem install Mxx_ru
 
-ARG hgrev=tip
+ARG hgrev=HEAD
 
 RUN echo "*** Downloading RESTinio ***" \
 	&& cd /tmp \
-	&& hg clone https://bitbucket.com/sobjectizerteam/restinio \
+	&& git clone https://github.com/stiffstream/restinio \
 	&& cd restinio \
-	&& hg up -r $hgrev
+	&& git checkout $hgrev
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
 	&& cd /tmp/restinio \
