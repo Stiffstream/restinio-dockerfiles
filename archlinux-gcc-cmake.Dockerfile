@@ -4,27 +4,30 @@ FROM archlinux/base:latest
 RUN pacman -Sy --noconfirm gcc \
 	&& pacman -Sy --noconfirm ruby rubygems rake \
 	&& pacman -Sy --noconfirm wget \
-	&& pacman -Sy --noconfirm mercurial
+	&& pacman -Sy --noconfirm git \
+	&& pacman -Sy --noconfirm openssl
 
 RUN pacman -Sy --noconfirm tar gzip unzip
 
+RUN pacman -Sy --noconfirm boost
+
 RUN gem install Mxx_ru
 
-ARG hgrev=tip
+RUN echo "*** Getting CMake ***" \
+	&& pacman -Sy --noconfirm cmake make
+
+ARG hgrev=HEAD
 
 RUN echo "*** Downloading RESTinio ***" \
 	&& cd /tmp \
-	&& hg clone https://bitbucket.com/sobjectizerteam/restinio \
+	&& git clone https://github.com/stiffstream/restinio \
 	&& cd restinio \
-	&& hg up -r $hgrev
+	&& git checkout $hgrev
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
 	&& export PATH=${PATH}:~/.gem/ruby/2.6.0/bin \
 	&& cd /tmp/restinio \
 	&& mxxruexternals
-
-RUN echo "*** Getting CMake ***" \
-	&& pacman -Sy --noconfirm cmake make
 
 RUN echo "*** Building RESTinio ***" \
 	&& cd /tmp/restinio/dev \
