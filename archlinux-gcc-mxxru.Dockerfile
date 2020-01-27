@@ -22,7 +22,7 @@ RUN echo "*** Downloading RESTinio ***" \
 	&& git checkout $hgrev
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
-	&& export PATH=${PATH}:~/.gem/ruby/2.6.0/bin \
+	&& export PATH=${PATH}:~/.gem/ruby/2.7.0/bin \
 	&& cd /tmp/restinio \
 	&& mxxruexternals
 

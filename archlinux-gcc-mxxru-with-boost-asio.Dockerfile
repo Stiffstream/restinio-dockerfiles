@@ -13,9 +13,6 @@ RUN pacman -Sy --noconfirm boost
 
 RUN gem install Mxx_ru
 
-RUN echo "*** Getting CMake ***" \
-	&& pacman -Sy --noconfirm cmake make
-
 ARG hgrev=HEAD
 
 RUN echo "*** Downloading RESTinio ***" \
@@ -31,10 +28,11 @@ RUN echo "*** Extracting RESTinio's Dependencies ***" \
 
 RUN echo "*** Building RESTinio ***" \
 	&& cd /tmp/restinio/dev \
- 	&& mkdir cmake_build \
- 	&& cd cmake_build \
- 	&& cmake -DCMAKE_INSTALL_PREFIX=target -DCMAKE_BUILD_TYPE=Release .. \
- 	&& cmake --build . --config Release \
- 	&& cmake --build . --target test \
-	&& cmake --build . --target install
+	&& echo "MxxRu::Cpp::composite_target do; global_define 'RESTINIO_USE_BOOST_ASIO'; \
+  default_runtime_mode( MxxRu::Cpp::RUNTIME_RELEASE ); \
+  MxxRu::enable_show_brief; \
+  global_obj_placement MxxRu::Cpp::PrjAwareRuntimeSubdirObjPlacement.new( \
+    'target', MxxRu::Cpp::PrjAwareRuntimeSubdirObjPlacement::USE_COMPILER_ID ); \
+	end" > local-build.rb \
+	&& MXX_RU_CPP_TOOLSET=gcc_linux RESTINIO_USE_BOOST_ASIO=shared ruby build.rb --mxx-cpp-release
 
