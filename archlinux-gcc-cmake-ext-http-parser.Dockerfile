@@ -33,12 +33,12 @@ RUN echo "*** Extracting RESTinio's Dependencies ***" \
 
 RUN pacman -Sy --noconfirm vim
 
-#RUN echo "*** Building RESTinio ***" \
-#	&& cd /tmp/restinio/dev \
-# 	&& mkdir cmake_build \
-# 	&& cd cmake_build \
-# 	&& cmake -DRESTINIO_USE_EXTERNAL_HTTP_PARSER=ON -DCMAKE_INSTALL_PREFIX=target -DCMAKE_BUILD_TYPE=Release .. \
-# 	&& cmake --build . --config Release \
-# 	&& cmake --build . --target test \
-#	&& cmake --build . --target install
+RUN echo "*** Building RESTinio ***" \
+	&& cd /tmp/restinio/dev \
+ 	&& mkdir cmake_build \
+ 	&& cd cmake_build \
+ 	&& cmake -DRESTINIO_USE_EXTERNAL_HTTP_PARSER=ON -DCMAKE_INSTALL_PREFIX=target -DCMAKE_BUILD_TYPE=Release .. \
+ 	&& cmake --build . --config Release \
+ 	&& cmake --build . --target test \
+	&& cmake --build . --target install
 
