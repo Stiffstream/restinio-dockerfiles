@@ -7,6 +7,8 @@ RUN pacman -Sy --noconfirm gcc \
 	&& pacman -Sy --noconfirm git \
 	&& pacman -Sy --noconfirm openssl
 
+RUN pacman -Sy --noconfirm libffi
+
 RUN pacman -Sy --noconfirm tar gzip unzip
 
 RUN pacman -Sy --noconfirm boost
