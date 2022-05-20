@@ -19,10 +19,10 @@ RUN echo "*** Getting CMake ***" \
 
 ARG deps_path=/tmp/deps
 #ARG expected_lite_ver=2dc251509466c60626bb709b288cf6751fc65271
-ARG expected_lite_ver=v0.4.0
-ARG optional_lite_ver=v3.2.0
-ARG string_view_lite_ver=v1.3.0
-ARG variant_lite_ver=v1.2.2
+ARG expected_lite_ver=v0.5.0
+ARG optional_lite_ver=v3.5.0
+ARG string_view_lite_ver=v1.6.0
+ARG variant_lite_ver=v2.0.0
 
 RUN echo "*** Setting up expected-lite ***" \
 	&& cd /tmp \
