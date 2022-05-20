@@ -1,4 +1,4 @@
-FROM archlinux/base:latest
+FROM archlinux:latest
 
 # Prepare build environment
 RUN pacman -Sy --noconfirm gcc \
@@ -17,7 +17,10 @@ RUN pacman -Sy --noconfirm http-parser
 RUN pacman -Sy --noconfirm catch2
 RUN pacman -Sy --noconfirm fmt
 
-RUN gem install Mxx_ru
+RUN \
+	export GEM_HOME="$(ruby -e 'puts Gem.user_dir')" \
+	&& export PATH="$PATH:$GEM_HOME/bin" \
+	&& gem install Mxx_ru
 
 RUN echo "*** Getting CMake ***" \
 	&& pacman -Sy --noconfirm cmake make
@@ -33,7 +36,8 @@ RUN echo "*** Downloading RESTinio ***" \
 COPY externals-light.rb /tmp/restinio
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
-	&& export PATH=${PATH}:~/.gem/ruby/2.7.0/bin \
+	&& export GEM_HOME="$(ruby -e 'puts Gem.user_dir')" \
+	&& export PATH="$PATH:$GEM_HOME/bin" \
 	&& cd /tmp/restinio \
 	&& mxxruexternals -f externals-light.rb
 
@@ -46,6 +50,7 @@ RUN echo "*** Building RESTinio ***" \
  	&& cmake -DRESTINIO_USE_EXTERNAL_HTTP_PARSER=ON \
 		-DRESTINIO_FIND_DEPS=ON \
 		-DRESTINIO_TEST=ON \
+		-DRESTINIO_FMT_HEADER_ONLY=OFF \
 		-DRESTINIO_SAMPLE=OFF -DRESTINIO_INSTALL_SAMPLES=OFF \
 		-DRESTINIO_BENCH=OFF -DRESTINIO_INSTALL_BENCHES=OFF \
 		-DCMAKE_INSTALL_PREFIX=target -DCMAKE_BUILD_TYPE=Release .. \
