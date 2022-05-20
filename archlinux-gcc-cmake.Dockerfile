@@ -1,4 +1,4 @@
-FROM archlinux/base:latest
+FROM archlinux:latest
 
 # Prepare build environment
 RUN pacman -Sy --noconfirm gcc \
@@ -13,7 +13,10 @@ RUN pacman -Sy --noconfirm tar gzip unzip
 
 RUN pacman -Sy --noconfirm boost
 
-RUN gem install Mxx_ru
+RUN \
+	export GEM_HOME="$(ruby -e 'puts Gem.user_dir')" \
+	&& export PATH="$PATH:$GEM_HOME/bin" \
+	&& gem install Mxx_ru
 
 RUN echo "*** Getting CMake ***" \
 	&& pacman -Sy --noconfirm cmake make
@@ -27,7 +30,8 @@ RUN echo "*** Downloading RESTinio ***" \
 	&& git checkout $hgrev
 
 RUN echo "*** Extracting RESTinio's Dependencies ***" \
-	&& export PATH=${PATH}:~/.gem/ruby/2.7.0/bin \
+	&& export GEM_HOME="$(ruby -e 'puts Gem.user_dir')" \
+	&& export PATH="$PATH:$GEM_HOME/bin" \
 	&& cd /tmp/restinio \
 	&& mxxruexternals
 
