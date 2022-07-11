@@ -17,6 +17,7 @@ RUN \
 	&& gem install Mxx_ru
 
 ARG hgrev=HEAD
+ARG cppstd=cpp14
 
 RUN echo "*** Downloading RESTinio ***" \
 	&& cd /tmp \
@@ -32,5 +33,6 @@ RUN echo "*** Extracting RESTinio's Dependencies ***" \
 
 RUN echo "*** Building RESTinio ***" \
 	&& cd /tmp/restinio/dev \
-	&& MXX_RU_CPP_TOOLSET=gcc_linux ruby build.rb --mxx-cpp-release
+	&& cp local-build.rb.example local-build.rb \
+	&& MXX_RU_CPP_TOOLSET=gcc_linux RESTINIO_CPP_STD=$cppstd ruby build.rb --mxx-cpp-release
 
