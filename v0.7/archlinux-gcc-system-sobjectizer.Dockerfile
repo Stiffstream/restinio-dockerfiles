@@ -17,22 +17,14 @@ RUN echo "*** Getting CMake ***" \
 RUN pacman -Sy --noconfirm fakeroot sudo
 
 RUN echo "*** Create non_root user***" \
-	&& useradd non_root \
-	&& mkdir /home/non_root \
-	&& chown -R non_root:non_root /home/non_root \
-	&& echo 'non_root ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers \
-	&& echo 'root ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
+	&& useradd non_root -m \
+	&& echo 'non_root ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 
 RUN echo "*** Installing SObjectizer ***" \
 	&& cd /home/non_root \
 	&& sudo -u non_root git clone https://aur.archlinux.org/sobjectizer.git \
 	&& cd sobjectizer \
-	&& ls \
-	&& sudo -u non_root makepkg
-
-RUN cd /home/non_root/sobjectizer \
-	&& ls \
-	&& pacman -U --noconfirm sobjectizer-5.8.1.1-1-x86_64.pkg.tar.zst
+	&& sudo -u non_root bash -c "makepkg -si --noconfirm"
 
 RUN \
 	export GEM_HOME="$(ruby -e 'puts Gem.user_dir')" \
